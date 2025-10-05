@@ -1,69 +1,65 @@
-import mysql.connector
+import psycopg2
 import tkinter as tk
 
-conexion = mysql.connector.connect(
-    host="localhost",
-    user="root",             
-    password="",             
-    database="local"       
-)
+NEON_CONNECTION_STRING = "postgresql://neondb_owner:npg_IWkSflR45ogE@ep-green-breeze-aftetb90-pooler.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
-#VENTANA PRINCIPAL
+try:
+    conexion = psycopg2.connect(NEON_CONNECTION_STRING)
+    print("Conexión a Neon PostgreSQL exitosa.")
+except Exception as e:
+    print(f"Error al conectar a PostgreSQL: {e}")
+
+# VENTANA PRINCIPAL
 root = tk.Tk()
 root.title("PIZZERIA")
 root.state('zoomed')
 
-#GENERACION DE VENANAS INDIVIDUALES
-def ventanacajero ():
-    ventana_cajero = tk.Toplevel()
-    ventana_cajero.title("CAJERO")
-    ventana_cajero.state('zoomed')
-    ventana_cajero.mainloop()
-
-def ventanapizzero ():
-    ventana_pizzero = tk.Toplevel()
-    ventana_pizzero.title("PIZZERO")
-    ventana_pizzero.state('zoomed')
-    ventana_pizzero.mainloop()
-    
-def ventanaadmin ():
-    ventana_admin = tk.Toplevel()
-    ventana_admin.title("ADMIN")
-    ventana_admin.state('zoomed')
-    titulo_g = tk.Label( text="GESTION DE ADMINISTRADOR",font=("Times New Roman",50))
-    titulo_g.place(x=750,y=10)
-    primeravista_admin(ventana_admin)
-    ventana_admin.mainloop()
-
-    
-    
-#OPCIONES POR CADA USUARIO  
+# OPCIONES POR CADA USUARIO 
 
 def primeravista_admin(root):
-    bt_gestion_inventario= tk.Button(root,text="GESTIONAR INVENTARIO",font=("Times New Roman",45))
-    bt_gestion_inventario.place(x=655,y=150)  
+    bt_gestion_inventario = tk.Button(root, text="GESTIONAR INVENTARIO", font=("Times New Roman", 45))
+    bt_gestion_inventario.place(x=655, y=150) 
     
-    bt_gestion_promociones= tk.Button(root,text="GESTIONAR PROMOCIONES",font=("Times New Roman",45))
-    bt_gestion_promociones.place(x=635,y=450)  
+    bt_gestion_promociones = tk.Button(root, text="GESTIONAR PROMOCIONES", font=("Times New Roman", 45))
+    bt_gestion_promociones.place(x=635, y=450) 
     
-    bt_gestion_ventas= tk.Button(root,text="GESTIONAR VENTAS",font=("Times New Roman",45))
-    bt_gestion_ventas.place(x=670,y=750)     
+    bt_gestion_ventas = tk.Button(root, text="GESTIONAR VENTAS", font=("Times New Roman", 45))
+    bt_gestion_ventas.place(x=670, y=750) 
 
-#CAJERO-PIZZERO-ADMINISTRACION
+# GENERACION DE VENTANAS INDIVIDUALES
+def ventanacajero():
+    ventana_cajero = tk.Toplevel(root)
+    ventana_cajero.title("CAJERO")
+    ventana_cajero.state('zoomed')
+
+def ventanapizzero():
+    ventana_pizzero = tk.Toplevel(root)
+    ventana_pizzero.title("PIZZERO")
+    ventana_pizzero.state('zoomed')
+        
+def ventanaadmin():
+    ventana_admin = tk.Toplevel(root)
+    ventana_admin.title("ADMIN")
+    ventana_admin.state('zoomed')
+    titulo_g = tk.Label(ventana_admin, text="GESTION DE ADMINISTRADOR", font=("Times New Roman", 50))
+    titulo_g.place(x=750, y=10)
+    primeravista_admin(ventana_admin)
 
 
-boton_cajero = tk.Button(root, text="CAJERO",font=("Times New Roman",100),command=ventanacajero)
-boton_cajero.place(x=200,y=200)
+# CAJERO-PIZZERO-ADMINISTRACION
 
-boton_admin = tk.Button(root, text="ADMIN",font=("Times New Roman",100),command=ventanaadmin)
-boton_admin.place(x=600,y=500)
+boton_cajero = tk.Button(root, text="CAJERO", font=("Times New Roman", 100), command=ventanacajero)
+boton_cajero.place(x=200, y=200)
 
-boton_pizzero = tk.Button(root, text="PIZZERO",font=("Times New Roman",100),command=ventanapizzero)
-boton_pizzero.place(x=1000,y=200)
+boton_admin = tk.Button(root, text="ADMIN", font=("Times New Roman", 100), command=ventanaadmin)
+boton_admin.place(x=600, y=500)
 
-titulo = tk.Label( text="BIENBENIDO",font=("Times New Roman",50))
-titulo.place(x=750,y=10)
+boton_pizzero = tk.Button(root, text="PIZZERO", font=("Times New Roman", 100), command=ventanapizzero)
+boton_pizzero.place(x=1000, y=200)
+
+titulo = tk.Label(root, text="BIENVENIDO", font=("Times New Roman", 50))
+titulo.place(x=750, y=10)
 
 
-#ejecutar ventana
+# ejecutar ventana
 root.mainloop()
